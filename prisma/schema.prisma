@@ -1,15 +1,175 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(cuid())
+  email     String      @unique
+  password  String
+  name      String?
+  image     String?
+  bio       String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  accounts  Account[]
+  comments  Comment[]
+  ratings   Rating[]
+  reactions Reaction[]
+  recipes   Recipe[]
+  badges    UserBadge[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Recipe {
+  id           String             @id @default(cuid())
+  name         String
+  description  String?
+  instructions String?
+  prepTime     Int?
+  cookTime     Int?
+  servings     Int?
+  difficulty   String?
+  imageUrl     String?
+  calories     Float?
+  proteins     Float?
+  carbs        Float?
+  fats         Float?
+  fiber        Float?
+  sugars       Float?
+  isPublished  Boolean            @default(false)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  authorId     String
+  comments     Comment[]
+  ratings      Rating[]
+  reactions    Reaction[]
+  ingredients  RecipeIngredient[]
+  author       User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("recipes")
+}
+
+model Ingredient {
+  id              String             @id @default(cuid())
+  name            String             @unique
+  description     String?
+  caloriesPer100g Float?
+  proteinsPer100g Float?
+  carbsPer100g    Float?
+  fatsPer100g     Float?
+  fiberPer100g    Float?
+  sugarPer100g    Float?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  recipes         RecipeIngredient[]
+
+  @@map("ingredients")
+}
+
+model RecipeIngredient {
+  id           String     @id @default(cuid())
+  quantity     Float
+  unit         String
+  notes        String?
+  recipeId     String
+  ingredientId String
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeId, ingredientId])
+  @@map("recipe_ingredients")
+}
+
+model Comment {
+  id        String     @id @default(cuid())
+  content   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  authorId  String
+  recipeId  String
+  parentId  String?
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent    Comment?   @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[]  @relation("CommentReplies")
+  recipe    Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  reactions Reaction[]
+
+  @@map("comments")
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  type      String
+  createdAt DateTime @default(now())
+  userId    String
+  recipeId  String?
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId, type])
+  @@unique([userId, commentId, type])
+  @@map("reactions")
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  stars     Int
+  createdAt DateTime @default(now())
+  userId    String
+  recipeId  String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+  @@map("ratings")
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String
+  icon        String
+  rarity      String
+  users       UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  earnedAt DateTime @default(now())
+  userId   String
+  badgeId  String
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
 }
