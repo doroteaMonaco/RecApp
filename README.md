@@ -1,5 +1,5 @@
 # RecApp - Forum di Ricette Fit
-
+![alt text](recipe.png)
 ## 🎯 Obiettivo del Progetto
 RecApp è una web application forum dedicata alle ricette fitness, progettata con un design moderno ispirato a SaporNet. L'applicazione permette agli utenti di condividere, scoprire e interagire con ricette salutari e adatte a uno stile di vita fitness.
 
