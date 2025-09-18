@@ -1,45 +1,46 @@
-# RecApp - Forum di Ricette Fit
-![alt text](recipe.png)
-## 🎯 Obiettivo del Progetto
-RecApp è una web application forum dedicata alle ricette fitness, progettata con un design moderno ispirato a SaporNet. L'applicazione permette agli utenti di condividere, scoprire e interagire con ricette salutari e adatte a uno stile di vita fitness.
+# RecApp - Fitness Recipe Forum
+![RecApp Logo](recipe.png)
 
-## 🏗️ Architettura del Progetto
+## 🎯 Project Objective
+RecApp is a web application forum dedicated to fitness recipes, designed with a modern interface inspired by SaporNet. The application allows users to share, discover, and interact with healthy recipes suitable for a fitness lifestyle.
+
+## 🏗️ Project Architecture
 
 ### Frontend (React + Vite)
 - **Location**: `client/`
-- **Framework**: React 18 con Vite
+- **Framework**: React 18 with Vite
 - **Routing**: React Router DOM
-- **Styling**: CSS moderno con gradients e animazioni
-- **Componenti principali**:
-  - `Navbar`: Navigazione principale con logo, search, preferiti
-  - `Hero`: Sezione hero con call-to-action
-  - `CategoryButtons`: Griglia di categorie (Proteiche, Low Carb, Vegan, etc.)
-  - `RecipeCard`: Card per singole ricette con rating, likes, difficoltà
+- **Styling**: Modern CSS with gradients and animations
+- **Main Components**:
+  - `Navbar`: Main navigation with logo, search, favorites
+  - `Hero`: Hero section with call-to-action
+  - `CategoryButtons`: Category grid (Protein-rich, Low Carb, Vegan, etc.)
+  - `RecipeCard`: Individual recipe cards with rating, likes, difficulty
 
 ### Backend (Node.js + Express)
 - **Location**: `server/`
 - **Framework**: Node.js + Express
-- **Database**: PostgreSQL con Prisma ORM
-- **Caching**: Redis per performance
-- **Autenticazione**: JWT + OAuth (Google/GitHub)
+- **Database**: PostgreSQL with Prisma ORM
+- **Caching**: Redis for performance
+- **Authentication**: JWT + OAuth (Google/GitHub)
 
 ### Database Schema
-- **Users**: Gestione utenti e profili
-- **Recipes**: Ricette con ingredienti, istruzioni, valori nutrizionali
-- **Comments**: Sistema di commenti
-- **Ratings**: Valutazioni delle ricette
-- **Badges**: Sistema gamification
+- **Users**: User management and profiles
+- **Recipes**: Recipes with ingredients, instructions, nutritional values
+- **Comments**: Comment system
+- **Ratings**: Recipe ratings
+- **Badges**: Gamification system
 
-## 🚀 Setup e Avvio
+## 🚀 Setup and Launch
 
-### Prerequisiti
+### Prerequisites
 - Node.js 18+
 - PostgreSQL 14+
-- Docker (opzionale)
+- Docker (optional)
 
-### Installazione
+### Installation
 
-#### Metodo 1: Setup Locale
+#### Method 1: Local Setup
 ```bash
 # Backend
 cd server
@@ -53,58 +54,58 @@ npm install
 npm run dev
 ```
 
-#### Metodo 2: Docker
+#### Method 2: Docker
 ```bash
-# Avvio completo con Docker Compose
+# Complete launch with Docker Compose
 docker-compose up --build
 ```
 
-### URL di Accesso
+### Access URLs
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:3000
-- Database: PostgreSQL su porta 5432
-- Redis: porta 6379
+- Database: PostgreSQL on port 5432
+- Redis: port 6379
 
-## 🎨 Design e UI
+## 🎨 Design and UI
 
-### Palette Colori
-- **Primario**: Orange gradient (#ff6b35 → #ff4500)
-- **Sfondo**: Cream/Beige (#ffeee6, #ffe5d9)
-- **Testo**: Dark gray (#2d2d2d)
-- **Accenti**: Verde per difficulty easy, rosso per hard
+### Color Palette
+- **Primary**: Orange gradient (#ff6b35 → #ff4500)
+- **Background**: Cream/Beige (#ffeee6, #ffe5d9)
+- **Text**: Dark gray (#2d2d2d)
+- **Accents**: Green for easy difficulty, red for hard
 
-### Componenti UI
+### UI Components
 - **Cards**: Border radius 20px, hover animations
 - **Buttons**: Gradient background, shadow effects
-- **Typography**: Font weight 800 per titoli, Segoe UI family
-- **Responsive**: Grid layout con auto-fit, mobile-first
+- **Typography**: Font weight 800 for titles, Segoe UI family
+- **Responsive**: Grid layout with auto-fit, mobile-first
 
-## 📱 Funzionalità Principali
+## 📱 Main Features
 
-### ✅ Completate
-- [x] Setup progetto con separazione client/server
-- [x] Configurazione Docker + PostgreSQL + Redis
-- [x] Schema database con Prisma
-- [x] Componenti UI base (Navbar, Hero, Categories, RecipeCard)
-- [x] Design responsive ispirato a SaporNet
-- [x] Sistema di autenticazione pianificato
+### ✅ Completed
+- [x] Project setup with client/server separation
+- [x] Docker + PostgreSQL + Redis configuration
+- [x] Database schema with Prisma
+- [x] Base UI components (Navbar, Hero, Categories, RecipeCard)
+- [x] SaporNet-inspired responsive design
+- [x] Planned authentication system
 
-### 🔄 In Sviluppo
-- [ ] React Router per navigazione
-- [ ] API REST per ricette
-- [ ] Sistema di autenticazione completo
-- [ ] Upload immagini ricette
-- [ ] Sistema di like/preferiti
+### 🔄 In Development
+- [ ] React Router for navigation
+- [ ] REST API for recipes
+- [ ] Complete authentication system
+- [ ] Recipe image upload
+- [ ] Like/favorites system
 
-### 📋 Da Implementare
-- [ ] Pagina dettaglio ricetta
-- [ ] Profilo utente
-- [ ] Sistema di commenti
-- [ ] Search e filtri avanzati
-- [ ] Dashboard admin
-- [ ] Sistema di notifiche
+### 📋 To Be Implemented
+- [ ] Recipe detail page
+- [ ] User profile
+- [ ] Comment system
+- [ ] Advanced search and filters
+- [ ] Admin dashboard
+- [ ] Notification system
 
-## 🔧 Tecnologie Utilizzate
+## 🔧 Technologies Used
 
 ### Frontend
 - React 18
@@ -125,14 +126,14 @@ docker-compose up --build
 - Docker & Docker Compose
 - Git & GitHub
 
-## 📂 Struttura File
+## 📂 File Structure
 
 ```
 RecApp/
 ├── client/                 # React frontend
 │   ├── src/
-│   │   ├── components/     # Componenti React
-│   │   ├── pages/         # Pagine (da implementare)
+│   │   ├── components/     # React components
+│   │   ├── pages/         # Pages (to be implemented)
 │   │   ├── hooks/         # Custom hooks
 │   │   └── utils/         # Utilities
 │   ├── public/
@@ -142,25 +143,26 @@ RecApp/
 │   │   ├── routes/        # API routes
 │   │   ├── models/        # Database models
 │   │   ├── middleware/    # Express middleware
-│   │   └── config/        # Configurazioni
+│   │   └── config/        # Configurations
 │   ├── prisma/           # Database schema
 │   └── package.json
-├── docs/                 # Documentazione
+├── docs/                 # Documentation
 ├── docker-compose.yml    # Container orchestration
 └── README.md
 ```
 
-## 🤝 Contributori
-- **Sviluppo**: GitHub Copilot AI Assistant
-- **Design**: Ispirato a SaporNet
-- **Progetto**: RecApp Forum Ricette Fit
+## 🤝 Contributors
+- **Development**: GitHub Copilot AI Assistant
+- **Design**: Inspired by SaporNet
+- **Project**: RecApp Fitness Recipe Forum
 
-## 📝 Note Tecniche
-- Database configurato con utente `recapp_user` e database `recapp`
-- Redis utilizzato per caching e sessioni
-- JWT per autenticazione stateless
-- Prisma per ORM type-safe
-- Vite per fast development e build ottimizzate
+## 📝 Technical Notes
+- Database configured with user `recapp_user` and database `recapp`
+- Redis used for caching and sessions
+- JWT for stateless authentication
+- Prisma for type-safe ORM
+- Vite for fast development and optimized builds
 
 ---
-Sostituisci i placeholder e personalizza le funzionalità secondo le tue esigenze!
+
+Replace placeholders and customize features according to your needs!
