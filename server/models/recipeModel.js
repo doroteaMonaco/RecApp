@@ -1,4 +1,5 @@
-import prisma from "../config/prisma";
+import prismaConfig from "../config/prisma.js";
+const { prisma } = prismaConfig;
 
 export const createRecipe = async (recipedata) => {
     return await prisma.recipe.create({

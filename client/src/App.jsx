@@ -1,12 +1,54 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CategoryButtons from './components/CategoryButtons';
 import RecipeCard from './components/RecipeCard';
+import Login from './components/Login';
+import Signup from './components/Signup';
 import './App.css';
 
 const HomePage = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Controlla se c'è un utente loggato nel localStorage
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+
+    if (token && userData) {
+      try {
+        setUser(JSON.parse(userData));
+      } catch (error) {
+        console.error('Errore nel parsing dei dati utente:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      // Chiamata al backend per logout (opzionale)
+      await fetch('http://localhost:3000/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    } catch (error) {
+      console.error('Errore durante il logout:', error);
+    }
+
+    // Rimuovi dati dal localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+
+    // Redirect alla home
+    navigate('/');
+  };
   // Dati di esempio per le ricette
   const sampleRecipes = [
     {
@@ -116,6 +158,20 @@ const HomePage = () => {
   return (
     <>
       <Hero />
+      
+      {user && (
+        <section className="welcome-section">
+          <div className="container">
+            <div className="welcome-content">
+              <h2 className="welcome-message">Benvenuto, {user.name || user.username}!</h2>
+              <p className="welcome-subtitle">
+                Bentornato nella nostra community di ricette fit. Scopri nuove ricette o condividi le tue creazioni.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+      
       <CategoryButtons />
       
       <section className="featured-recipes">
@@ -157,6 +213,50 @@ const FavoritesPage = () => {
   );
 };
 
+const AuthCallback = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+      // Salva il token nel localStorage
+      localStorage.setItem('token', token);
+
+      // Decodifica il token per ottenere le informazioni dell'utente
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const userData = {
+          id: payload.userId,
+          email: payload.email,
+          name: payload.name || payload.email.split('@')[0] // Fallback se name non è presente
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+      } catch (error) {
+        console.error('Errore nel parsing del token:', error);
+      }
+
+      // Redirect alla home page
+      navigate('/');
+    } else {
+      // Se non c'è token, redirect al login
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  return (
+    <div className="page-container">
+      <div className="page-content">
+        <h1 className="page-title">Completando l'autenticazione...</h1>
+        <p className="page-description">
+          Stiamo completando il processo di login. Verrai reindirizzato a breve.
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const NewRecipePage = () => {
   return (
     <div className="page-container">
@@ -178,6 +278,9 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/new-recipe" element={<NewRecipePage />} />
       </Routes>

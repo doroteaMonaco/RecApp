@@ -65,6 +65,69 @@ docker-compose up --build
 - Database: PostgreSQL su porta 5432
 - Redis: porta 6379
 
+## 🔐 Configurazione Autenticazione
+
+### Variabili d'Ambiente
+Prima di avviare il progetto, configura le variabili d'ambiente nel file `server/.env`:
+
+```bash
+# Copia il file di esempio
+cp server/.env.example server/.env
+```
+
+### JWT Secret
+Genera una chiave sicura per JWT:
+```bash
+# Su Linux/Mac
+openssl rand -base64 32
+
+# Su Windows (PowerShell)
+[System.Web.Security.Membership]::GeneratePassword(32,0)
+```
+
+### Google OAuth Setup
+1. Vai su [Google Cloud Console](https://console.cloud.google.com/)
+2. Crea un nuovo progetto o selezionane uno esistente
+3. Abilita l'API "Google+ API"
+4. Vai su "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
+5. Configura:
+   - Application type: Web application
+   - Authorized redirect URIs: `http://localhost:3000/auth/google/callback`
+6. Copia Client ID e Client Secret nel `.env`
+
+### GitHub OAuth Setup
+1. Vai su [GitHub Developer Settings](https://github.com/settings/developers)
+2. Clicca "New OAuth App"
+3. Configura:
+   - Homepage URL: `http://localhost:5173`
+   - Authorization callback URL: `http://localhost:3000/auth/github/callback`
+4. Copia Client ID e Client Secret nel `.env`
+
+### File .env Completo
+```env
+# Database
+DATABASE_URL="postgresql://postgres:nuovapassword@localhost:5432/recapp?schema=public"
+REDIS_URL="redis://localhost:6379"
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# JWT Secret
+JWT_SECRET="your-generated-secret-key-here"
+
+# Google OAuth
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# GitHub OAuth
+GITHUB_CLIENT_ID="your-github-client-id"
+GITHUB_CLIENT_SECRET="your-github-client-secret"
+
+# Frontend URL
+FRONTEND_URL="http://localhost:5173"
+```
+
 ## 🎨 Design e UI
 
 ### Palette Colori
@@ -87,12 +150,13 @@ docker-compose up --build
 - [x] Schema database con Prisma
 - [x] Componenti UI base (Navbar, Hero, Categories, RecipeCard)
 - [x] Design responsive ispirato a SaporNet
-- [x] Sistema di autenticazione pianificato
+- [x] **Sistema di autenticazione completo (JWT + OAuth Google/GitHub)**
+- [x] **Componenti Login/Signup con UI moderna**
+- [x] **Routing e gestione stato utente**
 
 ### 🔄 In Sviluppo
 - [ ] React Router per navigazione
 - [ ] API REST per ricette
-- [ ] Sistema di autenticazione completo
 - [ ] Upload immagini ricette
 - [ ] Sistema di like/preferiti
 
